@@ -1,55 +1,45 @@
 #include<bits/stdc++.h>
 using namespace std;
-bool isSafe(vector<vector<char>>& a,int r,int c,int n)
+int toInt(char a)
 {
-    bool ans=true;
-    if(a[r][c]=='O'&&(r==n-1||c==n-1||r==0||c==0))
-    {
-        return false;
-    }
-    if(a[r][c]=='X')
-    {
-        return true;
-    }
-    if(a[r][c]=='S')
-    {
-        return true;
-    }
-    a[r][c]='S';
-     ans=ans&isSafe(a,r+1,c,n);
-     ans=ans&isSafe(a,r,c+1,n);
-     ans=ans&isSafe(a,r-1,c,n);
-     ans=ans&isSafe(a,r,c-1,n);
-    a[r][c]='O';
-    return ans;
-
+    int d=a-48;
+    return d;
 }
-    void solve(vector<vector<char>>& board) {
-        for(int i;i<board.size();i++)
+void multiply(string num1, string num2) {
+    // int a=toInt('4');
+    // char c=toChar(a);
+    // cout<<c;
+    int n=num1.size();
+    int n1=num2.size();
+    int vecSize=(n+n1);
+    vector<int> ans(vecSize,0);
+    //string ans;
+    string s;
+    int carry=0;
+    for(int i=n1-1;i>=0;i--)
+    {
+        for(int j=n-1;j>=0;j--)
         {
-            for(int j=0;j<board[0].size();j++)
-            {
-                if(board[i][j]=='O'&&isSafe(board,i,j,board.size()))
-                {
-                    board[i][j]='X';
-                }
-            }
-        }
-        vector<vector<char>> board1=board;
-        for(auto i:board1)
-        {
-            for(auto j:i)
-            {
-                cout<<j<<" ";
-            }
-            cout<<endl;
+            int a=toInt(num2[i]);
+            int b=toInt(num1[j]);
+            int posForDigit=vecSize-((n1-i-1)+(n-j-1)+1);
+            int posForCarry=vecSize-((n1-i-1)+(n-j-1)+2);
+            int c=a*b+ans[posForDigit];
+            int lastdigit=c%10;
+            //char ins=toChar(lastdigit);
+            carry=c/10;
+            ans[posForDigit]=lastdigit;
+            ans[posForCarry]+=carry;
         }
     }
-
+    for(auto i:ans)
+    {
+        //s.push_back(i + '0');
+        cout<<i<<" ";
+    }
+   // return s;
+}
 int main()
 {
-    vector<vector<char>> board={{'X','X','X','X'},{'X','O','O','X'},{'X','X','O','X'},{'X','O','X','X'}};
-    solve(board);
-    return 0;
-
+    multiply("456","123");
 }
